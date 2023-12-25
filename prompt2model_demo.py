@@ -87,7 +87,7 @@ def parse_model_size_limit(line: str, default_size=3e9) -> float:
         line: The user input.
         default_size: The default size to use if the user does not specify a size.
     """
-    if len(line.strip()) == 0:
+    if not line.strip():
         return default_size
     model_units = {"B": 1e0, "KB": 1e3, "MB": 1e6, "GB": 1e9, "TB": 1e12, "PB": 1e15}
     unit_disambiguations = {
@@ -342,10 +342,10 @@ def main():
         )
         processor_logger = get_formatted_logger("DatasetProcessor")
         processor_logger.setLevel(logging.INFO)
-        training_datasets = []
         validation_datasets = []
         test_datasets = []
-        for idx, modified_dataset_dict in enumerate(t5_modified_dataset_dicts):
+        training_datasets = []
+        for modified_dataset_dict in t5_modified_dataset_dicts:
             training_datasets.append(modified_dataset_dict["train"])
             validation_datasets.append(modified_dataset_dict["val"])
             test_datasets.append(modified_dataset_dict["test"])
@@ -389,8 +389,7 @@ def main():
                 "per_device_train_batch_size"
             ]  # noqa E501
             max_batch_size = input(
-                "Enter the max batch size. "
-                + f"Press enter to use default ({default_batch_size}): "
+                f"Enter the max batch size. Press enter to use default ({default_batch_size}): "
             )
 
             min_num_epochs = (
